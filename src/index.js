@@ -1,12 +1,63 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  withRouter
+} from "react-router-dom";
+import "./index.css";
+import Home from "./components/Home/Home";
+import Register from "./Containers/Register";
+import Login from "./Containers/Login";
+import * as serviceWorker from "./serviceWorker";
+import firebase from "./firebase/firebase";
+import { createStore } from "redux";
+import { Provider, connect } from "react-redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import rootReducers from './Redux/Reducers/index';
+import {setUser, clearUser} from './Redux/Actions/index';
 
-ReactDOM.render(<App />, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+const store = createStore(rootReducers, composeWithDevTools());
+
+class Root extends Component {
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.props.setUser(user);
+        this.props.history.push("/home");
+      }
+      else{
+        //this.props.history.push("/login");
+        //this.props.clearUser();
+      }
+    });
+  }
+  render() {
+    return (   
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+        <Route path="/home" component={Home} />
+        <Route exact path="/" component={Login} />
+      </Switch>
+    );
+  }
+}
+
+const mapStatetoProps = state =>({
+    isLoading:state.user.isLoading,
+});
+
+const RootWithAuth = withRouter(connect(mapStatetoProps,{ setUser, clearUser })(Root));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Router>
+      <RootWithAuth />
+    </Router>
+  </Provider>,
+  document.getElementById("root")
+);
 serviceWorker.unregister();
