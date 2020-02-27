@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import {Wrapper, ImageWrapper, LoginWrapper } from './LoginStyled';
-import {useHistory} from 'react-router-dom';
 
 
 const Login = ({emailChange,passwordChange,handleSubmit,password,email}) => {

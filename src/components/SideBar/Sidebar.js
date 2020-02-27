@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useState } from 'react';
+import React from 'react';
 import { SideBarContainer, ProfileContainer, Title } from "./SidebarStyled";
 import firebase from "../../firebase/firebase";
 import ChannelContainer from '../../Containers/Channels';
