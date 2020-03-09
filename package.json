@@ -1,7 +1,6 @@
 {
   "name": "slack",
   "version": "0.1.0",
-  "private": false,
   "homepage": "http://shakil00725.github.io/slack",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
